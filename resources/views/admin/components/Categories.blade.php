@@ -226,16 +226,18 @@
 
 
 
-//Category Add
 
-$('#CategoryAddConfirmBtn').click(function() {
+ //Category Add
+ $('#CategoryAddConfirmBtn').click(function() {
             var name = $('#CategoryName').val();
             var categories = $('#Categories').val();
+            var icon = $('#iconCategory').prop('files')[0];
+            console.log(icon);
             var image = $('#imageCategory').prop('files')[0];
-            CategoryAdd(name, categories, image);
+            CategoryAdd(name, categories, icon, image);
         })
 
-        function CategoryAdd(name, categories, image) {
+        function CategoryAdd(name, categories, icon, image) {
             if (name.length == 0) {
                 toastr.error('Category Title is empty!');
             } else if (categories == 0) {
@@ -250,8 +252,10 @@ $('#CategoryAddConfirmBtn').click(function() {
                 var formData = new FormData();
                 formData.append('data', JSON.stringify(my_data));
                 formData.append('photo', image);
-              console.log(formData);
-                axios.post("{{ route('admin.addCategory') }}", formData, {
+                formData.append('icon', icon);
+                console.log(formData);
+
+                axios.post("/admin/addCategory", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

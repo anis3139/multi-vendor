@@ -50,13 +50,16 @@ class ProductCategoriesController extends Controller
             $host = $_SERVER['HTTP_HOST'];
             $location = "http://" . $host . "/storage/" . $photoName;
 
-
+            $iconPath =  $request->file('icon')->store('public');
+            $iconName = (explode('/', $iconPath))[1];
+            $iconHost = $_SERVER['HTTP_HOST'];
+            $iconNameLocation = "http://" . $iconHost . "/storage/" . $iconName;
 
             $result = ProductsCategoryModel::insert([
                 'name' => $name,
                 'parent_id' => $categories,
-                'banner_image' => $location
-
+                'banner_image' => $location,
+                'icon' => $iconNameLocation,
             ]);
             if ($result == true) {
                 return 1;
