@@ -1,10 +1,11 @@
 @extends('admin.layouts.admin')
 @section('css')
-<style>
-    .dropdown-content {
-        margin: -10px;
-}
-</style>
+    <style>
+        .dropdown-content {
+            margin: -10px;
+        }
+
+    </style>
 @endsection
 @section('content')
 
@@ -95,6 +96,24 @@
     </div>
 
     <!-- Category add -->
+    <!-- Modal Category Delete -->
+    <div class="modal fade" id="deleteModalCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body p-3 text-center">
+                    <h5 class="mt-4">Do you want to Delete</h5>
+                    <h5 id="CategoryDeleteId" class="mt-4 d-none "></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No</button>
+                    <button data-id="" id="confirmDeleteCategory" type="button" class="btn btn-sm btn-danger">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Category Delete -->
 
 @endsection
 
@@ -108,7 +127,9 @@
             axios.get("{{ route('admin.getCategoriesData') }}")
 
                 .then(function(response) {
+                    console.log(response.data);
                     if (response.status = 200) {
+
                         $('#mainDivCategory').removeClass('d-none');
                         $('#loadDivCategory').addClass('d-none');
                         $('#CategoryDataTable').DataTable().destroy();
@@ -124,9 +145,9 @@
                                 "<td>" + count++ + " </td>" +
                                 "<td>" + dataJSON[i].name + " </td>" +
                                 "<td><img width='200px' height='80' class='table-img' src=" + dataJSON[i]
-                                .image + "> </td>" +
+                                .banner_image + "> </td>" +
                                 "<td><img width='200px' height='80' class='table-img' src=" + dataJSON[i]
-                                .image + "> </td>" +
+                                .icon + "> </td>" +
                                 "<td><a class='CategoryDeleteIcon' data-id=" + dataJSON[i].id +
                                 "><i class='fas fa-edit'></i></a> </td>" +
                                 "<td><a class='CategoryDeleteIcon' data-id=" + dataJSON[i].id +
@@ -162,15 +183,10 @@
 
 
 
-
-
-
-
-
-
-
         $('#addBtnCategory').click(function() {
+            CategoryDropDownPush();
             $('#addCategoryModal').modal('show');
+
         });
 
 
@@ -179,25 +195,29 @@
         // Material Select Initialization
         $(document).ready(function() {
             $('#Categories').material_select();
+
         });
 
+        function CategoryDropDownPush() {
+            // Add Category List
+            axios.get("{{ route('admin.getCategoriesData') }}")
+                .then(function(response) {
 
-        // Add Category List
-        axios.get("{{ route('admin.getCategoriesData') }}")
-            .then(function(response) {
-                var dataJSON = response.data;
-
-                $('#Categories').empty();
-                $('#Categories').append(`<option disabled selected class='p-5 m-5'>Select Parent Category</option>`);
-                $.each(dataJSON, function(i, item) {
+                    var dataJSON = response.data;
+                    $('#Categories').empty();
                     $('#Categories').append(
-                        `<option value="${dataJSON[i].id}"> ${dataJSON[i].name} </option>`);
+                        `<option  selected class='p-5 m-5' value='0'>Select Parent Category</option>`);
+                    $.each(dataJSON, function(i, item) {
+                        $('#Categories').append(
+                            `<option value="${dataJSON[i].id}"> ${dataJSON[i].name} </option>`);
 
-                    $('#Categories').material_select('refresh');
+                        $('#Categories').material_select('refresh');
+                    });
+                }).catch(function(error) {
+                    alert("There are no Category")
                 });
-            }).catch(function(error) {
-                alert("There are no Category")
-            });
+
+        }
 
 
         //image Preview
@@ -225,14 +245,11 @@
 
 
 
-
-
- //Category Add
- $('#CategoryAddConfirmBtn').click(function() {
+        //Category Add
+        $('#CategoryAddConfirmBtn').click(function() {
             var name = $('#CategoryName').val();
             var categories = $('#Categories').val();
             var icon = $('#iconCategory').prop('files')[0];
-            console.log(icon);
             var image = $('#imageCategory').prop('files')[0];
             CategoryAdd(name, categories, icon, image);
         })
@@ -240,8 +257,6 @@
         function CategoryAdd(name, categories, icon, image) {
             if (name.length == 0) {
                 toastr.error('Category Title is empty!');
-            } else if (categories == 0) {
-                toastr.error('Category description is empty!');
             } else {
                 $('#CategoryAddConfirmBtn').html(
                     "<div class='spinner-border spinner-border-sm text-primary' role='status'></div>"); //animation
@@ -249,18 +264,18 @@
                     name: name,
                     categories: categories
                 }];
-                var formData = new FormData();
-                formData.append('data', JSON.stringify(my_data));
-                formData.append('photo', image);
-                formData.append('icon', icon);
-                console.log(formData);
+                var fm = new FormData();
+                fm.append('data', JSON.stringify(my_data));
+                fm.append('photo', image);
+                fm.append('icon', icon);
+                fm.getAll('photo');
 
-                axios.post("/admin/addCategory", formData, {
+                axios.post("/admin/addCategory", fm, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then(function(response) {
-
+                    console.log(response.data);
                     $('#CategoryAddConfirmBtn').html("Save");
                     if (response.status = 200) {
                         if (response.data == 1) {
@@ -269,7 +284,12 @@
                             $('#CategoryName').val("");
                             $('#Categories').val("");
                             $('#imageCategory').val("");
-                            document.getElementById("addCategoryImagePreview").src = window.location.protocol + "//" +
+                            document.getElementById("addCategoryImagePreview").src = window.location.protocol +
+                                "//" +
+                                window.document.location.host + "/images/default-image.png";
+
+                            document.getElementById("addCategoryIconPreview").src = window.location.protocol +
+                                "//" +
                                 window.document.location.host + "/images/default-image.png";
                             getCategorydata();
                         } else {
@@ -292,36 +312,41 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        //  Category delete modal yes button
+        $('#confirmDeleteCategory').click(function() {
+            var id = $('#CategoryDeleteId').html();
+            // var id = $(this).data('id');
+            DeleteDataCategory(id);
+        })
+        //delete Category function
+        function DeleteDataCategory(id) {
+            $('#confirmDeleteCategory').html(
+                "<div class='spinner-border spinner-border-sm text-primary' role='status'></div>"); //animation
+            axios.post("/admin/deleteCategory", {
+                    id: id
+                })
+                .then(function(response) {
+                    console.log(response.data);
+                    $('#confirmDeleteCategory').html("Yes");
+                    if (response.status == 200) {
+                        if (response.data == 1) {
+                            $('#deleteModalCategory').modal('hide');
+                            toastr.error('Delete Success.');
+                            getCategorydata();
+                        } else {
+                            $('#deleteModalCategory').modal('hide');
+                            toastr.error('Delete Failed');
+                            getCategorydata();
+                        }
+                    } else {
+                        $('#deleteModalCategory').modal('hide');
+                        toastr.error('Something Went Wrong');
+                    }
+                }).catch(function(error) {
+                    $('#deleteModalCategory').modal('hide');
+                    toastr.error('Something Went Wrong');
+                });
+        }
 
     </script>
 

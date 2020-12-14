@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductsCategoryModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use phpDocumentor\Reflection\PseudoTypes\True_;
 
 class ProductCategoriesController extends Controller
@@ -38,7 +39,7 @@ class ProductCategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+
 
 
 
@@ -67,9 +68,7 @@ class ProductCategoriesController extends Controller
                 return 0;
             }
 
-        } catch (\Throwable $th) {
-            return response()->json(array('error',$th));
-        }
+
 
     }
 
@@ -113,9 +112,19 @@ class ProductCategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->input('id');
+
+        $delete_old_file = ProductsCategoryModel::where('id', '=', $id)->first();
+        $delete_old_file_name = (explode('/', $delete_old_file->image))[4];
+        Storage::delete("public/".$delete_old_file_name);
+        $result = $delete_old_file->delete();
+        if ($result == true) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public function getCategoriesData(){
@@ -144,11 +153,13 @@ class ProductCategoriesController extends Controller
                                         `parent`.`id`,
                                         `parent`.`name`,
                                         `parent`.`parent_id`,
+                                        `parent`.`icon`,
+                                        `parent`.`banner_image`,
                                         COUNT(`child`.`id`) AS `SectionCount`
                                     FROM
-                                        `Products_category` `parent`
+                                        `products_category` `parent`
                                             LEFT JOIN
-                                        `Products_category` `child` ON `parent`.`id` = `child`.`parent_id`
+                                        `products_category` `child` ON `parent`.`id` = `child`.`parent_id`
                                     WHERE
                                         `parent`.`parent_id` = '0'
                                     GROUP BY `parent`.`id`
@@ -160,13 +171,15 @@ class ProductCategoriesController extends Controller
                 'id' => $each_category->id,
                 'name' => $each_category->name,
                 'parent_id' => $each_category->parent_id,
+                'icon' => $each_category->icon,
+                'banner_image' => $each_category->banner_image,
             );
             $ParentCategory = $each_category->name;
 
-            if ($each_category -> SectionCount < 1) {
+            // if ($each_category -> SectionCount < 1) {
                 array_push($parent_idList, $Currucilam_array);$parent_id=$each_category->name;
 
-            }
+            // }
             $this->GetCategoryRecursive( $each_category->id, $parent_idList, $Level, $ParentCategory);
         }
     }
@@ -176,11 +189,13 @@ class ProductCategoriesController extends Controller
                                 `parent`.`id`,
                                 `parent`.`name`,
                                 `parent`.`parent_id`,
+                                `parent`.`icon`,
+                                `parent`.`banner_image`,
                                 COUNT(`child`.`id`) AS `SectionCount`
                             FROM
-                                `Products_category` `parent`
+                                `products_category` `parent`
                                     LEFT JOIN
-                                `Products_category` `child` ON `parent`.`id` = `child`.`parent_id`
+                                `products_category` `child` ON `parent`.`id` = `child`.`parent_id`
                             WHERE
                                 `parent`.`parent_id` = $parent_category_id
                             GROUP BY `parent`.`id`
@@ -198,6 +213,8 @@ class ProductCategoriesController extends Controller
                 'id' => $each_category->id,
                 'name' =>$ParentCategory.'-> '. $each_category->name,
                 'parent_id' => $each_category->parent_id,
+                'icon' => $each_category->icon,
+                'banner_image' => $each_category->banner_image,
             );
             $CategoryName_Recursive=$ParentCategory.'-> '. $each_category->name;
 
