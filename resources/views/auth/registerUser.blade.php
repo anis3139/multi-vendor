@@ -59,16 +59,36 @@
                     <h5>Register</h5>
                 </div>
                 <div class="card-body pt-0">
-                    <form action="#" method="POST">
-                        <div class="form-group my-4">
-                            <input type="text" class="form-control login" name="" id="" placeholder="Email">
+                    @include('massege')
+                    @include('errorMassage')
+                    <form action="{{route('client.addUser')}}" method="POST">
+                        @csrf
+
+                    <div class="form-group my-4">
+                        <input type="text" class="form-control login" name="name"  placeholder="Name" value="{{old('name')}}">
+                    </div>
+                    <div class="form-group my-4">
+                        <input type="text" class="form-control login"name="phone_number" placeholder="Phone Number" value="{{old('phone_number')}}">
+                    </div>
+                    <div class="form-group my-4">
+                        <input type="text" class="form-control login" name="email" id="email" placeholder="Email"  value="{{old('email')}}">
+                    </div>
+                    <div class="form-group my-4">
+                        <input type="Password" class="form-control login" name="password" id="password" placeholder="Password">
+                    </div>
+
+                    <div class="form-group row">
+
+
+                        <div class="col-md-12">
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
                         </div>
-                        <div class="form-group my-4">
-                            <input type="Password" class="form-control login" name="" id="" placeholder="Password">
-                        </div>
-                        <div class="form-group text-center my-4">
-                            <input type="submit" class="btn btn-danger btn-disable btn-block p-2 font-weight-bold" value="Singup" name="" id="">
-                        </div>
+                    </div>
+
+                    <div class="form-group text-center my-4">
+                        <input type="submit" class="btn btn-danger btn-disable btn-block p-2 font-weight-bold" value="Singup" name="" id="">
+                    </div>
+
                     </form>
                         <div class="row px-3">
                             <div class="mr-auto"></div>

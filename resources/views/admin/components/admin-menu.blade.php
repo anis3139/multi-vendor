@@ -11,13 +11,13 @@
                 </ul>
                 <ul class="navbar-nav my-lg-0">
                     <li class="nav-item">
-                    <a class="btn btn-sm btn-danger" href="{{ route('logout') }}"
+                    <a class="btn btn-sm btn-danger" href="{{ route('admin.logout') }}"
                         onclick="event.preventDefault();
                                       document.getElementById('logout-form').submit();">
                          {{ __('Logout') }}
                      </a>
 
-                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                     <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
                          @csrf
                      </form>
                      </li>
@@ -31,16 +31,20 @@
                 <ul id="sidebarnav">
                     <li class="nav-devider mt-0" style="margin-bottom: 5px"></li>
                     <li> <a href="{{ route('admin.home') }}"><span> <i class="fas fa-home"></i> </span><span class="hide-menu">Home</span></a></li>
-                    <li> <a href="#"><span> <i class="fas fa-user"></i> </span><span class="hide-menu">Admin</span></a></li>
-                    <li> <a href="#"><span> <i class="fas fa-users"></i> </span><span class="hide-menu">Vendor</span></a></li>
+                    <li> <a href="{{ route('admin.adminPannel') }}"><span> <i class="fas fa-user"></i> </span><span class="hide-menu">Admin</span></a></li>
+
+                    <li> <a href="{{ route('admin.ordeIndex')}}"><span> <i class="fas fa-cart-arrow-down"></i> </span><span class="hide-menu">Order Manage</span></a></li>
+                    <li> <a href="{{route('admin.vendorPannel')}}"><span> <i class="fas fa-users"></i> </span><span class="hide-menu">Vendor</span></a></li>
                     <li> <a href="#"><span> <i class="fas fa-mail-bulk"></i> </span><span class="hide-menu">Contact</span></a></li>
                     <li> <a href="{{ route('admin.categories') }}"><span> <i class="fas fa-server"></i> </span><span class="hide-menu">Category</span></a></li>
                     <li> <a href="{{ route('admin.brands') }}"><span> <i class="fas fa-suitcase"></i> </span><span class="hide-menu">Brand</span></a></li>
                     <li> <a href="{{ route('admin.products') }}"><span> <i class="fas fa-plus-circle"></i> </span><span class="hide-menu">Products</span></a></li>
                     <li> <a href="{{ route('admin.slider') }}"><span> <i class="fas fa-image"></i> </span><span class="hide-menu">Slider</span></a></li>
-                    <li> <a href="#"><span> <i class="fas fa-cog"></i> </span><span class="hide-menu">Generale Settings</span></a></li>
-                    <li> <a href="#"><span> <i class="fas fa-thumbs-up"></i> </span><span class="hide-menu">Social Settings</span></a></li>
+                    <li> <a href="{{ route('admin.review') }}"><span><i class="far fa-comments"></i> </span><span class="hide-menu">Review</span></a></li>
 
+                    <li> <a href="{{ route('admin.pages') }}"><span><i class="fas fa-book-open"></i></span><span class="hide-menu">Pages</span></a></li>
+                    <li> <a href="{{ route('admin.others') }}"><span> <i class="fas fa-cog"></i> </span><span class="hide-menu">Generale Settings</span></a></li>
+                    <li> <a href="{{ route('admin.social') }}"><span> <i class="fas fa-thumbs-up"></i> </span><span class="hide-menu">Social Settings</span></a></li>
                 </ul>
             </nav>
         </div>

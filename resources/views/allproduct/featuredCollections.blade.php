@@ -7,31 +7,22 @@
             <div class="card-body">
                 <table class="table table-borderless table-responsive-sm featuredSellersTable">
                     <tr>
+                        @foreach ($featureProducts as $featureProduct)
                         <td class="text-center text-capitalize mx-auto">
-                            <img class="img-fluid" src="{{asset('images')}}/products/watch/watch1.jpg" alt="">
-                            <h5 class="featuredSellersTitle">Casual for her</h5>
-                            <p class="featuredSellersPrice"><span>From</span> ৳ <span>250</span></p>
+
+                            @php $i= 1; @endphp
+                            @foreach ($featureProduct->img as $images)
+                                @if ($i > 0)
+                                <img style="width: 10rem; height:10rem;" src="{{ $images->image_path }}" alt="">
+                                @endif
+                                @php $i--; @endphp
+                            @endforeach
+
+
+                            <h5 class="featuredSellersTitle">{{ $featureProduct->product_title }}</h5>
+                            <p class="featuredSellersPrice"><span>From</span> ৳ <span>{{ $featureProduct->product_price }}</span></p>
                         </td>
-                        <td class="text-center text-capitalize mx-auto">
-                            <img class="img-fluid" src="{{asset('images')}}/products/watch/watch2.jpg" alt="">
-                            <h5 class="featuredSellersTitle">Casual for her</h5>
-                            <p class="featuredSellersPrice"><span>From</span> ৳ <span>250</span></p>
-                        </td>
-                        <td class="text-center text-capitalize mx-auto">
-                            <img class="img-fluid" src="{{asset('images')}}/products/watch/watch3.jpg" alt="">
-                            <h5 class="featuredSellersTitle">Casual for her</h5>
-                            <p class="featuredSellersPrice"><span>From</span> ৳ <span>250</span></p>
-                        </td>
-                        <td class="text-center text-capitalize mx-auto">
-                            <img class="img-fluid" src="{{asset('images')}}/products/watch/watch4.jpg" alt="">
-                            <h5 class="featuredSellersTitle">Casual for her</h5>
-                            <p class="featuredSellersPrice"><span>From</span> ৳ <span>250</span></p>
-                        </td>
-                        <td class="text-center text-capitalize mx-auto">
-                            <img class="img-fluid" src="{{asset('images')}}/products/watch/watch5.jpg" alt="">
-                            <h5 class="featuredSellersTitle">Casual for her</h5>
-                            <p class="featuredSellersPrice"><span>From</span> ৳ <span>250</span></p>
-                        </td>
+                        @endforeach
                     </tr>
                 </table>
             </div>

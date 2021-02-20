@@ -30,7 +30,6 @@ class ProductBrandController extends Controller
     public function create()
     {
         return view('admin.components.addBrands');
-
     }
 
 
@@ -46,29 +45,28 @@ class ProductBrandController extends Controller
 
 
 
-        $data = json_decode($_POST['data']);
-        $name = $data['0']->name;
-        $categories = $data['0']->categories;
-        $photoPath =  $request->file('photo')->store('public');
-        $photoName = (explode('/', $photoPath))[1];
-        $host = $_SERVER['HTTP_HOST'];
-        $location = "http://" . $host . "/storage/" . $photoName;
+            $data = json_decode($_POST['data']);
+            $name = $data['0']->name;
+            $categories = $data['0']->categories;
+            $photoPath =  $request->file('photo')->store('public');
+            $photoName = (explode('/', $photoPath))[1];
+            $host = $_SERVER['HTTP_HOST'];
+            $protocol = $_SERVER['PROTOCOL'] = isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) ? 'https://' : 'http://';
+            $location = $protocol . $host .  "/storage/" . $photoName;
 
-        $result = ProductsBrandModel::insert([
-            'name' => $name,
-            'products_category_id' => $categories,
-            'image' => $location,
-        ]);
-        if ($result == true) {
-            return 1;
-        } else {
-            return 0;
+            $result = ProductsBrandModel::insert([
+                'name' => $name,
+                'products_category_id' => $categories,
+                'image' => $location,
+            ]);
+            if ($result == true) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } catch (\Throwable $th) {
+            return response()->json(array('error', $th));
         }
-
-    } catch (\Throwable $th) {
-        return response()->json(array('error',$th));
-    }
-
     }
 
     /**
@@ -104,8 +102,6 @@ class ProductBrandController extends Controller
      */
     public function update(Request $request)
     {
-
-
     }
 
 
@@ -122,26 +118,25 @@ class ProductBrandController extends Controller
         $id = $request->input('id');
         $delete_old_file = ProductsBrandModel::where('id', '=', $id)->first();
         $delete_old_file_name = (explode('/', $delete_old_file->image))[4];
-        Storage::delete("public/".$delete_old_file_name);
+        Storage::delete("public/" . $delete_old_file_name);
         $result = $delete_old_file->delete();
         if ($result == true) {
             return 1;
         } else {
             return 0;
         }
-
     }
 
 
     public function getBrandData()
     {
-        $brand_result =DB::select("SELECT
-            Products_brand.id,
-            Products_brand.name AS brandName,
-            Products_brand.image,
-            Products_brand.products_category_id,
-            Products_category.id AS categoryId,
-            Products_category.name AS categoryName
+        $brand_result = DB::select("SELECT
+            products_brand.id,
+            products_brand.name AS brandName,
+            products_brand.image,
+            products_brand.products_category_id,
+            products_category.id AS categoryId,
+            products_category.name AS categoryName
         FROM
         products_brand
                 LEFT JOIN
@@ -171,14 +166,13 @@ class ProductBrandController extends Controller
             $delete_old_file = ProductsBrandModel::where('id', '=', $id)->first();
             $delete_old_file_name = (explode('/', $delete_old_file->image))[4];
 
-            Storage::delete("public/".$delete_old_file_name);
-
+            Storage::delete("public/" . $delete_old_file_name);
 
 
             $photoPath =  $request->file('photo')->store('public');
             $photoName = (explode('/', $photoPath))[1];
             $host = $_SERVER['HTTP_HOST'];
-            $location = "http://" . $host . "/storage/" . $photoName;
+            $location = "http://" . $host .  "/storage/" . $photoName;
 
 
             $result = ProductsBrandModel::where('id', '=', $id)->update(['name' => $name, 'products_category_id' => $products_category_models_id, 'image' => $location]);
@@ -195,7 +189,5 @@ class ProductBrandController extends Controller
                 return 0;
             }
         }
-
     }
-
 }

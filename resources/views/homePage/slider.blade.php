@@ -1,3 +1,8 @@
+@php
+$others=App\Models\OthersModel::first();
+@endphp
+
+
 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-0">
 
             <div id="containerTriangle" class="row">
@@ -58,10 +63,14 @@
 
                             <div class=" col-md-4 col-lg-4 col-xl-4 p-0 d-none d-sm-block" id="sliderBanner">
                                 <a class="sliderBanner" href="#">
-                                    <img src="{{ asset('images') }}/banner/sliderBanner.jpg" alt="">
+                                    <img src="@if ($others)
+                                    {{$others->promo_image_one}}
+                                    @endif" alt="">
                                 </a>
                                 <a class="sliderBanner" href="#">
-                                    <img src="{{ asset('images') }}/banner/sliderBanner2.jpg" alt="">
+                                    <img src="@if ($others)
+                                    {{$others->promo_image_two}}
+                                    @endif" alt="">
                                 </a>
                             </div>
 
@@ -78,61 +87,61 @@
                             <tr>
                                 <td>
                                     <a href="{{ route('omart') }}" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(1).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(1).png')}}" alt="">
                                         <p class="categoryTitle">O Mart</p>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="#" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(2).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(2).png')}}" alt="">
                                         <p class="categoryTitle">Buy In Bnagladesh</p>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="#" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(3).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(3).png')}}" alt="">
                                         <p class="categoryTitle">Ovendar Exclucive</p>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="#" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(4).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(4).png')}}" alt="">
                                         <p class="categoryTitle">Celebriting Event</p>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="#" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(5).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(5).png')}}" alt="">
                                         <p class="categoryTitle">Muslim Club</p>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="#" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(6).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(6).png')}}" alt="">
                                         <p class="categoryTitle">Cash Back</p>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="#" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(7).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(7).png')}}" alt="">
                                         <p class="categoryTitle">Ovendar Free Shipping</p>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="#" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(8).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(8).png')}}" alt="">
                                         <p class="categoryTitle">Brand Discount</p>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="#" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(9).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(9).png')}}" alt="">
                                         <p class="categoryTitle">Desi Product</p>
                                     </a>
                                 </td>
                                 <td>
                                     <a href="#" class="text-decoration-none text-dark text-center">
-                                        <img class="categoryIcon m-auto" src="./images/icons/cat(10).png" alt="">
+                                        <img class="categoryIcon m-auto" src="{{asset('images/icons/cat(10).png')}}" alt="">
                                         <p class="categoryTitle">Ovendar Mall</p>
                                     </a>
                                 </td>

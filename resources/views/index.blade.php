@@ -26,5 +26,6 @@
 
 {{-- flash Product --}}
 @include('homePage.flashSell')
+@include('homePage.recomended')
 
 @endsection

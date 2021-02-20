@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Vendor extends Authenticatable
+class Vendor extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -20,6 +20,7 @@ class Vendor extends Authenticatable
         'name',
         'email',
         'password',
+        'active',
     ];
 
     /**
@@ -40,4 +41,15 @@ class Vendor extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+
+    public function products()
+    {
+        return $this->hasMany(product_table::class);
+    }
+    public function review()
+    {
+        return $this->hasMany(ReatingReview::class, 'seller_id', 'id');
+    }
 }

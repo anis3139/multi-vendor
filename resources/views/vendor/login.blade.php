@@ -1,20 +1,22 @@
-@extends('layouts.vendor')
+@extends('vendor.layouts.vendor-login')
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-5">
         <div class="col-md-8">
             <div class="card">
+
                 @if (session()->has('status'))
 
                     <div class="alert alert-dark">
                         {{session('status')}}
                     </div>
                     @endif
+                    @include('massege')
                 <div class="card-header">Vendor Login</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('vendor.auth') }}">
+                    <form method="POST" action="{{ route('vendor.onlogin') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -63,11 +65,13 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
+                                <a href="{{route('vendor.registration')}}"  class="btn btn-primary">
+                                        SignUp
+                                </a>
+                            </div>
+                            <div class="col-md-8 offset-md-4 mt-2">
+                                <a href="{{ route('home') }}">Back To Home</a> &ensp;&ensp;
+                                <a href="{{ route('vendor.forgot') }}">Forgate Password</a>
                             </div>
                         </div>
                     </form>

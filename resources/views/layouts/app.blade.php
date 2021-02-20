@@ -37,6 +37,36 @@
 
 </head>
 <body>
+    <!-- Load Facebook SDK for JavaScript -->
+      <div id="fb-root"></div>
+      <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            xfbml            : true,
+            version          : 'v9.0'
+          });
+        };
+
+        (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/bn_IN/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
+
+      <!-- Your Chat Plugin code -->
+      <div class="fb-customerchat"
+        attribution="setup_tool"
+        page_id="118792296628029">
+      </div>
+    @php
+    $others=App\Models\OthersModel::first();
+    $socialData=App\Models\SocialModel::first();
+
+    @endphp
+
+
     <header class="sticky-top">
         <div class="headerPill">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-0">
@@ -53,23 +83,36 @@
                                     <span class="mx-2">&#8739;</span>
 
                                     <p class="m-0">Follow Us</p>
-                                    <a href="#"><i class="fab fa-facebook"></i></a>
-                                    <a href="#"><i class="fab fa-twitter"></i></a>
-                                    <a href="#"><i class="fab fa-instagram"></i></a>
-                                    <a href="#"><i class="fab fa-youtube"></i></a>
-                                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="@if ($socialData)
+                                    {{$socialData->facebook}}
+                                    @endif"><i class="fab fa-facebook"></i></a>
+                                    <a href="@if ($socialData)
+                                    {{$socialData->twitter}}
+                                    @endif"><i class="fab fa-twitter"></i></a>
+                                    <a href="@if ($socialData)
+                                    {{$socialData->instragram}}
+                                    @endif"><i class="fab fa-instagram"></i></a>
+                                    <a href="@if ($socialData)
+                                    {{$socialData->youtube}}
+                                    @endif"><i class="fab fa-youtube"></i></a>
+                                    <a href="@if ($socialData)
+                                    {{$socialData->linkin}}
+                                    @endif"><i class="fab fa-linkedin-in"></i></a>
 
 
                                 </div>
                             </div>
+
                             <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 p-0 text-right">
-                                <a class="text-decoration-none notifications" href="#"><span><i
-                                            class="fas fa-bell text-light" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"></i></span>&nbsp;Notifications</a>
-                                <a class="text-decoration-none" href="#"><span><i
-                                            class="fas fa-question-circle text-light"></i></span>&nbsp;Help</a>
-                                <a href="{{ route('register') }}" class="font-weight-bold text-decoration-none">&nbsp;Sing Up</a>
-                                <span class="mx-2">&#8739;</span>
-                                <a class="font-weight-bold text-decoration-none" href="{{ route('login') }}">Login</a>
+                                <a class="text-decoration-none notifications" href="#"><span><i class="fas fa-bell text-light" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"></i></span>&nbsp;Notifications</a>
+                                <a class="text-decoration-none" href="#"><span><i class="fas fa-question-circle text-light"></i></span>&nbsp;Help</a>
+                            @guest
+                                <a href="{{route('client.registration')}}" class="font-weight-bold text-decoration-none">&nbsp;Sing Up</a><span class="mx-2">&#8739;</span>
+                                <a class="font-weight-bold text-decoration-none" href="{{route('client.login')}}">Login</a>
+                            @endguest
+                            @auth
+                            <a class="font-weight-bold text-decoration-none" href="{{ route('client.logout') }}">Log Out</a>
+                            @endauth
                             </div>
                         </div>
 
@@ -81,26 +124,26 @@
         </div>
 
 
-        <div id="navbar_with_search">
+        <div id="navbar_with_search" class="p-md-3 p-lg-3 p-xl-3">
             <nav class="navbar navbar-expand-md navbar-light bg-faded">
                 <div class="container">
                     <div id="navbarBrandWithToggle">
 
                         <a href="/" class="navbar-brand">
-                            <img src="{{ asset('images') }}/logo/logo-09.svg " alt="logo" class="header_logo">
+                            <img src="@if ($others)
+                            {{$others->logo}}
+                            @endif" alt="logo" class="header_logo">
                         </a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar5">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
                     </div>
 
                     <div id="searchbar">
-                        <form class=" my-1 d-inline">
+                        <form class=" my-1 d-inline" method="post" action="{{route('client.search')}}">
+                            @csrf
                             <div class="input-group">
                                 <input type="text" class="form-control  border-right-0 searchInput"
-                                    placeholder="Search on Ovender" class="searchInput">
+                                    placeholder="Search on Ovender" class="searchInput"  name="key">
                                 <span class="input-group-append">
-                                    <button class="btn searchBtn" type="button">
+                                    <button class="btn searchBtn" type="submit">
                                         <i class="fa fa-search text-light"></i>
                                     </button>
                                 </span>
@@ -108,32 +151,20 @@
                         </form>
                     </div>
                     <div class="shop_icon">
-                        <a href="#">
+                        <a href="{{ route('client.showCart') }}">
                             <img src="{{ asset('images') }}/icons/shopping_cart.svg" alt="" srcset="">
                         </a>
                     </div>
-                    <div class="acoount_icon">
-                        <a href="#">
+                    @auth
+
+                    <div class="acoount_icon d-block" >
+                        <a href="{{ route('client.profile') }}">
                             <img src="{{ asset('images') }}/icons/account.svg" alt="" srcset="">
                         </a>
                     </div>
+                    @endauth
                 </div>
             </nav>
-        </div>
-        <div class="row">
-            <div class="container">
-
-                <div class="text-center navlinks">
-                    <a href="#">Kasut Perempuan</a>
-                    <a href="#">Bluetooth Earphone</a>
-                    <a href="#">Cordless Drill</a>
-                    <a href="#">Nike Shoe</a>
-                    <a href="#">Women's Casual Pants</a>
-                    <a href="#">Cadar Patchwork</a>
-                    <a href="#">Seluar Slack</a>
-                    <a href="#">Casio Watch</a>
-                </div>
-            </div>
         </div>
     </header>
 
@@ -205,11 +236,21 @@
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 mt-2">
                             <h5>Follow Us</h5>
                             <ul class="socialIcons p-0">
-                                <li><a target="_blank" href="https://www.facebook.com/Ovendar-Online-Shopping-118792296628029/"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a target="_blank" href="https://twitter.com/Rofiqul49579041"><i class="fab fa-twitter"></i></a></li>
-                                <li><a target="_blank" href="https://www.instagram.com/rrooffiiqq6/"><i class="fab fa-instagram"></i></a></li>
-                                <li><a target="_blank" href="https://www.youtube.com/channel/UCWulAbzLeo_KPF1sjRcmdSQ?view_as=subscriber"><i class="fab fa-youtube"></i></a></li>
-                                <li><a target="_blank" href="https://www.linkedin.com/in/ovendar-online-shopping-57a9561b7/"><i class="fab fa-linkedin"></i></a></li>
+                                <li><a target="_blank" href="@if ($socialData)
+                                    {{$socialData->facebook}}
+                                    @endif"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a target="_blank" href="@if ($socialData)
+                                    {{$socialData->twitter}}
+                                    @endif"><i class="fab fa-twitter"></i></a></li>
+                                <li><a target="_blank" href="@if ($socialData)
+                                    {{$socialData->instragram}}
+                                    @endif"><i class="fab fa-instagram"></i></a></li>
+                                <li><a target="_blank" href="@if ($socialData)
+                                    {{$socialData->youtube}}
+                                    @endif"><i class="fab fa-youtube"></i></a></li>
+                                <li><a target="_blank" href="@if ($socialData)
+                                    {{$socialData->linkin}}
+                                    @endif"><i class="fab fa-linkedin"></i></a></li>
 
                             </ul>
                         </div>
@@ -226,6 +267,8 @@
     </footer>
 
     <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('backend/js/axios.min.js') }}"></script>
+
 
     @yield('js')
     <script src="{{ asset('js/custom.js') }}"></script>

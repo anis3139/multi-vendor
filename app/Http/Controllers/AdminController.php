@@ -13,14 +13,14 @@ class AdminController extends Controller
 
     public function login(Request $request)
     {
-        $credentials=$request->only('email','password');
+        $credentials = $request->only('email', 'password');
 
-        if (Auth::guard('admin')->attempt($credentials,$request->remember)) {
-            $user=Admin::where('email',$request->email)->first();
+        if (Auth::guard('admin')->attempt($credentials, $request->remember)) {
+            $user = Admin::where('email', $request->email)->first();
             Auth::guard('admin')->login($user);
             return redirect()->route('admin.home');
-        }else{
-            return redirect()->route('admin.login')->with('status','failed to login prosess');
+        } else {
+            return redirect()->route('admin.login')->with('status', 'failed to login prosess');
         }
     }
 
@@ -30,7 +30,9 @@ class AdminController extends Controller
     public function logout(Request $request)
     {
         if (Auth::guard('admin')->logout()) {
-            return redirect()->route('admin.login')->with('status','Admin logout susccessfuly');
+            return redirect()->route('admin.login')->with('status', 'Admin logout susccessfuly');
+        } else {
+            return redirect()->route('admin.login')->with('status', 'Admin logout susccessfuly');
         }
     }
 

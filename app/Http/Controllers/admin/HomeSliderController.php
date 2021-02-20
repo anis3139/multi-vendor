@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class HomeSliderController extends Controller
 {
-    public function SliderIndex(){
-
+    public function SliderIndex()
+    {
         return view('admin.Slider');
     }
 
@@ -30,7 +30,7 @@ class HomeSliderController extends Controller
         $photoPath =  $req->file('photo')->store('public');
         $photoName = (explode('/', $photoPath))[1];
         $host = $_SERVER['HTTP_HOST'];
-        $location = "http://" . $host . "/storage/" . $photoName;
+        $location = "http://" . $host .  "/storage/" . $photoName;
         $result = SliderModel::insert([
             'title' => $name,
             'sub_title' => $description,
@@ -65,17 +65,17 @@ class HomeSliderController extends Controller
         if ($req->file('photo')) {
 
 
-        $delete_old_file = SliderModel::where('id', '=', $id)->first();
-        $delete_old_file_name = (explode('/', $delete_old_file->image))[4];
+            $delete_old_file = SliderModel::where('id', '=', $id)->first();
+            $delete_old_file_name = (explode('/', $delete_old_file->image))[4];
 
-        Storage::delete("public/".$delete_old_file_name);
+            Storage::delete("public/" . $delete_old_file_name);
 
 
 
             $photoPath =  $req->file('photo')->store('public');
             $photoName = (explode('/', $photoPath))[1];
             $host = $_SERVER['HTTP_HOST'];
-            $location = "http://" . $host . "/storage/" . $photoName;
+            $location = "http://" . $host .  "/storage/" . $photoName;
 
             $result = SliderModel::where('id', '=', $id)->update(['title' => $name, 'sub_title' => $description, 'image' => $location]);
             if ($result == true) {
@@ -91,7 +91,6 @@ class HomeSliderController extends Controller
                 return 0;
             }
         }
-
     }
 
     function SliderDelete(Request $req)
@@ -99,7 +98,7 @@ class HomeSliderController extends Controller
         $id = $req->input('id');
         $delete_old_file = SliderModel::where('id', '=', $id)->first();
         $delete_old_file_name = (explode('/', $delete_old_file->image))[4];
-        Storage::delete("public/".$delete_old_file_name);
+        Storage::delete("public/" . $delete_old_file_name);
         $result = $delete_old_file->delete();
         if ($result == true) {
             return 1;
@@ -107,6 +106,4 @@ class HomeSliderController extends Controller
             return 0;
         }
     }
-
-
 }

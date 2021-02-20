@@ -58,20 +58,23 @@
                     <h5>Log In</h5>
                 </div>
                 <div class="card-body pt-0">
-                    <form action="#" method="POST">
+                    @include('massege')
+                    @include('errorMassage')
+                    <form action="{{route('client.onlogin')}}" method="POST">
+                        @csrf
                         <div class="form-group my-4">
-                            <input type="text" class="form-control login" name="" id="">
+                            <input type="email" class="form-control login" name="email" id="">
                         </div>
 
                         <div class="form-group my-4">
-                            <input type="password" class="form-control login" name="" id="">
+                            <input type="password" class="form-control login" name="password" id="">
                         </div>
                         <div class="form-group text-center my-4">
                             <input type="submit" class="btn btn-danger btn-disable btn-block p-2 font-weight-bold" value="Log In" name="" id="">
                         </div>
                     </form>
                         <div class="row px-3">
-                            <a href="" class="text-decoration-none text-left">Forget Password</a>
+                            <a href="{{ route('client.forgot') }}" class="text-decoration-none text-left">Forget Password</a>
                             <div class="mr-auto"></div>
                             <a href="{{ route('home') }}" class="text-decoration-none text-decoration-none">Back To Home</a>
                         </div>
@@ -93,7 +96,7 @@
                         </div>
                         <div class="row my-4 text-center">
                             <div class="text-center mx-auto">
-                                <span class="text-secondary">New To Ovendar</span>&nbsp;<a class="text-danger text-decoration-none font-weight-bolder" href="{{ route('register') }}">Sing Up</a>
+                                <span class="text-secondary">New To Ovendar</span>&nbsp;<a class="text-danger text-decoration-none font-weight-bolder" href="{{ route('client.registration') }}">Sing Up</a>
                             </div>
                         </div>
 

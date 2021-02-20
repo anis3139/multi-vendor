@@ -352,7 +352,7 @@
         function DeleteDataBrands(id) {
             $('#confirmDeleteBrands').html(
                 "<div class='spinner-border spinner-border-sm text-primary' role='status'></div>"); //animation
-            axios.post("/admin/BrandDelete", {
+            axios.post("{{ route('admin.BrandDelete')}}", {
                     id: id
                 })
                 .then(function(response) {
@@ -419,7 +419,7 @@
 
 
         function BrandsUpdateDetails(id) {
-            axios.post('/admin/getBrandEditData', {
+            axios.post("{{ route('admin.getBrandEditData') }}", {
                     id: id
                 })
                 .then(function(response) {
@@ -432,7 +432,8 @@
                         var jsonData = response.data;
                         $('#BrandNameEdit').val(jsonData[0].name);
 
-                        $('#CategoriesEdit option[value='+ jsonData[0].producrts_category_models_id +']').attr('selected','selected');
+                        $('#CategoriesEdit option[value=' + jsonData[0].producrts_category_models_id + ']').attr(
+                            'selected', 'selected');
 
                         var ImgSource = (jsonData[0].image);
                         $('#editBrandImagePreview').attr('src', ImgSource)
@@ -445,6 +446,8 @@
                     $('#wrongDivBrands').removeClass('d-none');
                 });
         }
+
+
         $('#imageBrandEdit').change(function() {
             var reader = new FileReader();
             reader.readAsDataURL(this.files[0]);
@@ -453,7 +456,6 @@
                 $('#editBrandImagePreview').attr('src', ImgSource)
             }
         })
-
 
 
 
@@ -482,7 +484,7 @@
                 var formData = new FormData();
                 formData.append('data', JSON.stringify(updateData));
                 formData.append('photo', imgUpdate);
-                axios.post('/admin/updateBrand', formData, {
+                axios.post("{{ route('admin.updateBrand') }}", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

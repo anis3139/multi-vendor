@@ -89,6 +89,7 @@ header{
 }
 
 
+
 .header_logo{
   /* width: 14vw; */
   height: 5vh;
@@ -101,7 +102,7 @@ header{
   background: linear-gradient(180deg, rgba(0,165,50,1) 0%, rgba(255,0,0,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#00a532",endColorstr="#ff0000",GradientType=1);
   border: 3px solid #fff;
-  height: 6vh;
+  height: 38px;
 }
 
 .searchInput::placeholder{
@@ -112,10 +113,6 @@ header{
   width: 70%;
 }
 
-
-.acoount_icon{
-  display: none;
-}
 
 .shop_icon img,.acoount_icon img{
   height: 6vh;
@@ -267,7 +264,7 @@ header{
 }
 
 .slider_mage img{
-    height: 100%;
+    height: 18.1vw;
     width: 100%;
 }
 
@@ -383,6 +380,7 @@ header{
 
 
 
+
 /* Flash Sell */
 
 #flashSell{
@@ -447,6 +445,9 @@ header{
   font-size: 16px;
   cursor: pointer;
   border-color:var(--primary-color-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Gray */
@@ -1086,7 +1087,7 @@ color: #ffffff;
   }
 
   .carousel-inner .carousel-item .carousel-item img {
-    height: 160px;
+    height: 57.1vw;
     width: 100%;
   }
 
@@ -1109,6 +1110,28 @@ color: #ffffff;
   .bannerImage{
     height: 8vh;
   }
+
+  .categoryImages{
+    min-height: 8rem;
+    max-height: 12rem;
+  }
+
+  .populercardbody img {
+    height: 15vh;
+    width: 100%;
+}
+
+  .productTitle {
+    font-family: Roboto;
+    font-size: 0.70em;
+    text-align: left;
+}
+
+
+  .flashSellProductCard img {
+    min-height: 5rem;
+    max-height: 14rem;
+}
 
 
 
@@ -1177,9 +1200,31 @@ color: #ffffff;
   }
 
   .carousel-inner,.carousel-item,.carousel-item img {
-    height: 160px;
+    height: 57.1vw;
     width: 100%;
   }
+
+  .categoryImages{
+    min-height: 8rem;
+    max-height: 12rem;
+  }
+
+  .populercardbody img {
+    height: 15vh;
+    width: 100%;
+}
+
+  .flashSellProductCard img {
+    min-height: 5rem;
+    max-height: 14rem;
+}
+
+.productTitle {
+    font-family: Roboto;
+    font-size: 0.70em;
+    text-align: left;
+}
+
 
   #banner {
     position: relative;
@@ -1264,7 +1309,7 @@ color: #ffffff;
   }
 
   .carousel-inner,.carousel-item,.carousel-item img {
-    height: 160px;
+    height: 57.1vw;
     width: 100%;
   }
 
@@ -1272,6 +1317,28 @@ color: #ffffff;
     position: relative;
     bottom: 0px;
   }
+
+
+  .categoryImages{
+    min-height: 8rem;
+    max-height: 12rem;
+  }
+
+  .populercardbody img {
+    height: 15vh;
+    width: 100%;
+}
+
+  .flashSellProductCard img {
+    min-height: 5rem;
+    max-height: 14rem;
+}
+
+.productTitle {
+    font-family: Roboto;
+    font-size: 0.70em;
+    text-align: left;
+}
 
   #Category {
     position: relative;
@@ -1301,3 +1368,10 @@ color: #ffffff;
 
   }
 }
+
+
+
+
+
+
+

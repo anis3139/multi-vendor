@@ -18,6 +18,7 @@ class CreateProductColorsTable extends Migration
             $table->string('product_color_code');
             $table->integer('product_color_product_id')->unsigned();
             $table->timestamps();
+            
         });
     }
 

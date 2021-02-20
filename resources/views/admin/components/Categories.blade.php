@@ -1,9 +1,9 @@
 @extends('admin.layouts.admin')
 @section('css')
     <style>
-        .dropdown-content {
-            margin: -10px;
-        }
+
+
+.select-wrapper input.select-dropdown {margin: -5px 0 -0rem;}
 
     </style>
 @endsection
@@ -20,6 +20,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>name</th>
+                                    <th>Status</th>
                                     <th>Image</th>
                                     <th>Icon</th>
                                     <th>Edit</th>
@@ -67,21 +68,30 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <input id="CategoryName" type="text" id="" class="form-control my-5"
-                                    placeholder="Category Name">
+                                placeholder="Category Name">
 
-                                <input type="file" id="iconCategory" class="form-control" name="text-input">
-                                <img id="addCategoryIconPreview" style="height: 100px !important;" class="imgPreview mt-3 "
-                                    src="{{ asset('images/default-image.png') }}" />
-                            </div>
-                            <div class="col-md-6">
                                 <select name="Categories" id="Categories" class="form-control my-5">
 
                                 </select>
 
+                                <select name="" id="catStatus">
+                                    <option value="1" selected>Publish</option>
+                                    <option value="0">Panding</option>
+                                </select>
 
+                            </div>
+                            <div class="col-md-6">
+
+                                <label for="imageCategory">Category Image</label>
                                 <input type="file" id="imageCategory" class="form-control" name="text-input">
                                 <img id="addCategoryImagePreview" style="height: 100px !important;" class="imgPreview mt-3 "
                                     src="{{ asset('images/default-image.png') }}" />
+                                    <div></div>
+                                <label for="iconCategory">Category Icon</label>
+                                <input type="file" id="iconCategory" class="form-control" name="text-input">
+                                <img id="addCategoryIconPreview" style="height: 100px !important;" class="imgPreview mt-3 "
+                                    src="{{ asset('images/default-image.png') }}" />
+
                             </div>
 
                         </div>
@@ -115,6 +125,58 @@
     </div>
     <!-- Modal Category Delete -->
 
+    <!-- Category Update -->
+    <div class="modal fade" id="updateCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title ml-5">Update New Category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body  text-center">
+                    <h5 id="CategoryEditId" class="mt-4 d-none"></h5>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input id="CategoryUpdateName" type="text" id="" class="form-control my-5"
+                                    placeholder="Category Name">
+                                    <select name="CategoriesUpdate" id="CategoriesUpdate" class="form-control my-5">
+                                    </select>
+
+                                    <select name="" id="catEditStatus">
+                                        <option value="1" selected>Publish</option>
+                                        <option value="0">Panding</option>
+                                    </select>
+                            </div>
+                            <div class="col-md-6">
+
+                                <label for="imageUpdateCategory">Category Image</label>
+                                <input type="file" id="imageUpdateCategory" class="form-control" name="text-input">
+                                <img id="updateCategoryImagePreview" style="height: 100px !important;"
+                                    class="imgPreview mt-3 " src="{{ asset('images/default-image.png') }}" />
+                                    <div></div>
+                                <label for="iconUpdateCategory">Category Image</label>
+                                <input type="file" id="iconUpdateCategory" class="form-control" name="text-input">
+                                <img id="updateCategoryIconPreview" style="height: 100px !important;"
+                                    class="imgPreview mt-3 " src="{{ asset('images/default-image.png') }}" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Cancel</button>
+                    <button id="CategoryUpdateConfirmBtn" type="button" class="btn  btn-sm  btn-danger">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Update -->
+
 @endsection
 
 
@@ -127,7 +189,7 @@
             axios.get("{{ route('admin.getCategoriesData') }}")
 
                 .then(function(response) {
-                    console.log(response.data);
+                        console.log(response.data);
                     if (response.status = 200) {
 
                         $('#mainDivCategory').removeClass('d-none');
@@ -141,14 +203,23 @@
 
 
                         $.each(dataJSON, function(i, item) {
+                            console.log(dataJSON[i].status);
+                            var statusCat='';
+                            if (dataJSON[i].status == 1) {
+                                statusCat='Publish';
+                            }else{
+                                statusCat='Panding';
+                            }
+
                             $('<tr class="text-center">').html(
                                 "<td>" + count++ + " </td>" +
                                 "<td>" + dataJSON[i].name + " </td>" +
+                                "<td>" + statusCat + " </td>" +
                                 "<td><img width='200px' height='80' class='table-img' src=" + dataJSON[i]
                                 .banner_image + "> </td>" +
                                 "<td><img width='200px' height='80' class='table-img' src=" + dataJSON[i]
                                 .icon + "> </td>" +
-                                "<td><a class='CategoryDeleteIcon' data-id=" + dataJSON[i].id +
+                                "<td><a class='CategoryEditIcon' data-id=" + dataJSON[i].id +
                                 "><i class='fas fa-edit'></i></a> </td>" +
                                 "<td><a class='CategoryDeleteIcon' data-id=" + dataJSON[i].id +
                                 "><i class='fas fa-trash-alt'></i></a> </td>"
@@ -195,6 +266,13 @@
         // Material Select Initialization
         $(document).ready(function() {
             $('#Categories').material_select();
+
+        });
+
+
+         // Material Select Initialization
+         $(document).ready(function() {
+            $('#catStatus').material_select();
 
         });
 
@@ -249,12 +327,13 @@
         $('#CategoryAddConfirmBtn').click(function() {
             var name = $('#CategoryName').val();
             var categories = $('#Categories').val();
+            var catStatus = $('#catStatus').val();
             var icon = $('#iconCategory').prop('files')[0];
             var image = $('#imageCategory').prop('files')[0];
-            CategoryAdd(name, categories, icon, image);
+            CategoryAdd(name, categories, icon, image, catStatus);
         })
 
-        function CategoryAdd(name, categories, icon, image) {
+        function CategoryAdd(name, categories, icon, image, catStatus) {
             if (name.length == 0) {
                 toastr.error('Category Title is empty!');
             } else {
@@ -262,7 +341,9 @@
                     "<div class='spinner-border spinner-border-sm text-primary' role='status'></div>"); //animation
                 my_data = [{
                     name: name,
-                    categories: categories
+                    catStatus: catStatus,
+                    categories: categories,
+                    catStatus: catStatus,
                 }];
                 var fm = new FormData();
                 fm.append('data', JSON.stringify(my_data));
@@ -270,12 +351,12 @@
                 fm.append('icon', icon);
                 fm.getAll('photo');
 
-                axios.post("/admin/addCategory", fm, {
+                axios.post("{{ route('admin.addCategory' )}}", fm, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then(function(response) {
-                    console.log(response.data);
+
                     $('#CategoryAddConfirmBtn').html("Save");
                     if (response.status = 200) {
                         if (response.data == 1) {
@@ -284,6 +365,7 @@
                             $('#CategoryName').val("");
                             $('#Categories').val("");
                             $('#imageCategory').val("");
+                            $('#iconCategory').val("");
                             document.getElementById("addCategoryImagePreview").src = window.location.protocol +
                                 "//" +
                                 window.document.location.host + "/images/default-image.png";
@@ -297,13 +379,13 @@
                             toastr.error('Add New Failed');
                             getCategorydata();
                         }
-                    } else {
+                    }  else {
                         $('#addCategoryModal').modal('hide');
                         toastr.error('Something Went Wrong');
                     }
                 }).catch(function(error) {
                     $('#addCategoryModal').modal('hide');
-                    toastr.error('Something Went Wrong');
+                        toastr.error('Something Went Wrong');
                 });
             }
         }
@@ -322,11 +404,11 @@
         function DeleteDataCategory(id) {
             $('#confirmDeleteCategory').html(
                 "<div class='spinner-border spinner-border-sm text-primary' role='status'></div>"); //animation
-            axios.post("/admin/deleteCategory", {
+            axios.post("{{ route('admin.deleteCategory') }}", {
                     id: id
                 })
                 .then(function(response) {
-                    console.log(response.data);
+                        console.log(response.data);
                     $('#confirmDeleteCategory').html("Yes");
                     if (response.status == 200) {
                         if (response.data == 1) {
@@ -346,6 +428,161 @@
                     $('#deleteModalCategory').modal('hide');
                     toastr.error('Something Went Wrong');
                 });
+        }
+
+
+
+
+
+        // category Update
+
+        // Material Select Initialization
+        $(document).ready(function() {
+            $('#CategoriesUpdate').material_select();
+
+        });
+
+ // Material Select Initialization
+ $(document).ready(function() {
+            $('#catEditStatus').material_select();
+
+        });
+
+
+        // Add Category List
+        axios.get("{{ route('admin.getCategoriesData') }}")
+            .then(function(response) {
+
+                var dataJSON = response.data;
+                $('#CategoriesUpdate').empty();
+                $('#CategoriesUpdate').append(
+                    `<option  selected class='p-5 m-5' value='0'>Parent Category</option>`);
+                $.each(dataJSON, function(i, item) {
+                    $('#CategoriesUpdate').append(
+                        `<option value="${dataJSON[i].id}"> ${dataJSON[i].name} </option>`);
+
+                    $('#CategoriesUpdate').material_select('refresh');
+                });
+            }).catch(function(error) {
+                alert("There are no Category")
+            });
+
+
+        //image Preview
+
+        $('#iconUpdateCategory').change(function() {
+            var reader = new FileReader();
+            reader.readAsDataURL(this.files[0]);
+            reader.onload = function(event) {
+                var ImgSource = event.target.result;
+                $('#updateCategoryIconPreview').attr('src', ImgSource)
+            }
+        })
+
+        //image Preview
+
+        $('#imageUpdateCategory').change(function() {
+            var reader = new FileReader();
+            reader.readAsDataURL(this.files[0]);
+            reader.onload = function(event) {
+                var ImgSource = event.target.result;
+                $('#updateCategoryImagePreview').attr('src', ImgSource)
+            }
+        })
+
+
+
+        function CategoryUpdateDetails(id) {
+            axios.post("{{ route('admin.getEditCategoryData') }}", {
+                    id: id
+                })
+                .then(function(response) {
+                    console.log(response.data);
+                    if (response.status == 200) {
+                        $('#loadDivCategory').addClass('d-none');
+                        $('#CategoryEditForm').removeClass('d-none');
+
+                        var jsonData = response.data;
+                        $('#CategoryUpdateName').val(jsonData[0].name);
+
+                        $('#catEditStatus option[value=' + jsonData[0].status + ']').attr(
+                            'selected', 'selected');
+
+                        $('#CategoriesUpdate option[value=' + jsonData[0].parent_id + ']').prop('selected', 'true');
+                        var iconSource = (jsonData[0].icon);
+                        $('#updateCategoryIconPreview').attr('src', iconSource)
+
+                        var ImgSource = (jsonData[0].banner_image);
+                        $('#updateCategoryImagePreview').attr('src', ImgSource)
+
+                    } else {
+                        $('#loadDivCategory').addClass('d-none');
+                        $('#wrongDivCategory').removeClass('d-none');
+                    }
+                }).catch(function(error) {
+                    $('#loadDivCategory').addClass('d-none');
+                    $('#wrongDivCategory').removeClass('d-none');
+                });
+        }
+
+
+
+
+          //Category update modal save button
+          $('#CategoryUpdateConfirmBtn').click(function() {
+            var idUpdate = $('#CategoryEditId').html();
+            var nameUpdate = $('#CategoryUpdateName').val();
+
+            var CategoriesEdit = $('#CategoriesUpdate').val();
+            var catEditStatus = $('#catEditStatus').val();
+            var img = $('#imageUpdateCategory').prop('files')[0];
+            var icon = $('#iconUpdateCategory').prop('files')[0];
+            CategoryUpdate(idUpdate, nameUpdate, CategoriesEdit, img, icon, catEditStatus);
+        })
+        //update Category data using modal
+        function CategoryUpdate(idUpdate, nameUpdate, CategoriesEdit, img, icon, catEditStatus) {
+            console.log(catEditStatus);
+            if (nameUpdate.length == 0) {
+                toastr.error('Category name is empty!');
+            }  else {
+                $('#CategoryUpdateConfirmBtn').html(
+                    "<div class='spinner-border spinner-border-sm text-primary' role='status'></div>"); //animation
+                updateData = [{
+                    id: idUpdate,
+                    name: nameUpdate,
+                    catEditStatus: catEditStatus,
+                    products_category_id: CategoriesEdit
+                }];
+                var formData = new FormData();
+                formData.append('data', JSON.stringify(updateData));
+                formData.append('photo', img);
+                formData.append('icon', icon);
+                axios.post("{{ route('admin.updateCategory') }}", formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(function(response) {
+                    console.log(response.data);
+                    $('#CategoryUpdateConfirmBtn').html("Update");
+                    if (response.status = 200) {
+                        if (response.data == 1) {
+                            $('#updateCategoryModal').modal('hide');
+                            toastr.success('Update Success.');
+                            getCategorydata();
+                        } else {
+                            $('#updateCategoryModal').modal('hide');
+                            toastr.error('Update Failed');
+                            getCategorydata();
+                        }
+                    } else {
+                        $('#updateCategoryModal').modal('hide');
+                        toastr.error('Something Went Wrong');
+                    }
+                }).catch(function(error) {
+                    $('#updateCategoryModal').modal('hide');
+                    toastr.error('Something Went Wrong');
+                });
+            }
         }
 
     </script>
