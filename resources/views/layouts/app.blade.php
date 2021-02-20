@@ -22,6 +22,57 @@
     @yield('css')
 
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <style>
+
+
+.notification img {
+  padding: 10px 0;
+}
+
+.notification-menu {
+    position: absolute;
+    top: 50px;
+    right: 0px;
+    background-color: #e5e5e5;
+    border: #989898;
+    padding: 5px;
+    list-style: none;
+    display: none;
+    text-align: left;
+    z-index: 3;
+    width: 376px;
+    border-radius: 2px;
+    height: 400px;
+    overflow-y:scroll ;
+}
+
+.notification-menu li {
+  background-color: #fff;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+
+.notification-menu li:hover {
+  background-color: rgb(189, 189, 189);
+  cursor: pointer;
+
+}
+
+
+.notification-menu h3 {
+  font-size: 15px;
+  margin: 0 0 5px 0;
+  font-weight: bold;
+  display: inline;
+}
+
+.notification-menu p {
+  margin-bottom: 0;
+  font-size: 14px;
+  color: black !important;
+}
+
+    </style>
 
 
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('images') }}/favicons/apple-touch-icon.png">
@@ -104,15 +155,30 @@
                             </div>
 
                             <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 p-0 text-right">
-                                <a class="text-decoration-none notifications" href="#"><span><i class="fas fa-bell text-light" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"></i></span>&nbsp;Notifications</a>
-                                <a class="text-decoration-none" href="#"><span><i class="fas fa-question-circle text-light"></i></span>&nbsp;Help</a>
-                            @guest
-                                <a href="{{route('client.registration')}}" class="font-weight-bold text-decoration-none">&nbsp;Sing Up</a><span class="mx-2">&#8739;</span>
-                                <a class="font-weight-bold text-decoration-none" href="{{route('client.login')}}">Login</a>
-                            @endguest
-                            @auth
-                            <a class="font-weight-bold text-decoration-none" href="{{ route('client.logout') }}">Log Out</a>
-                            @endauth
+                                @auth
+
+                                <div class="notification">
+                                    <img class src="https://s3.amazonaws.com/codecademy-content/projects/2/feedster/bell.svg"><span style="position: relative; right: 10px; bottom: 10px;" class="badge badge-danger countNotify">0</span>
+                                    <ul class="notification-menu">
+                                        <li>
+                                            <h3>William Roberts II</h3>
+                                            <p>Clean as a whistle</p>
+                                        </li>
+                                        <li>
+                                            <h3>Faheem Najm</h3>
+                                            <p>All I do is win</p>
+                                        </li>
+                                    </ul>
+                                    @endauth
+                                    <a class="text-decoration-none" href="#"><span><i class="fas fa-question-circle text-light"></i></span>&nbsp;Help</a>
+                                    @guest
+                                    <a href="{{route('client.registration')}}" class="font-weight-bold text-decoration-none">&nbsp;Sing Up</a><span class="mx-2">&#8739;</span>
+                                    <a class="font-weight-bold text-decoration-none" href="{{route('client.login')}}">Login</a>
+                                </div>
+                                @endguest
+                                @auth
+                                <a class="font-weight-bold text-decoration-none" href="{{ route('client.logout') }}">Log Out</a>
+                                @endauth
                             </div>
                         </div>
 
@@ -171,6 +237,21 @@
     <div id="container">
         @yield('mainContent')
     </div>
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+          </div>
+        </div>
+      </div>
 
 
 
@@ -290,6 +371,85 @@
           }, 1000);
 
     });
+    var main = function() {
+  $('.notification img').click(function() {
+    $('.notification-menu').toggle();
+  });
+
+  $('.post .btn').click(function() {
+    $(this).toggleClass('btn-like');
+  });
+};
+$(document).ready(main);
+
+$(document).ready(function(){
+    getallnotify();
+});
+
+function getallnotify() {
+    axios.get("{{route('getAllNotification')}}").then(function(response) {
+        console.log(response.data);
+
+
+        var allNotify=response.data.allnotify;
+        var unread=response.data.unreadNotify;
+        $('.countNotify').html(unread.length)
+
+        var html="";
+        for (let notify = 0; notify < allNotify.length; notify++) {
+            const element = allNotify[notify];
+
+
+            var color="";
+            if (element.is_seen== 0) {
+                color="background-color:#ff000021";
+            }
+            html+='<li style="'+color+'" onclick="getnotifydesc('+element.id+');">';
+            html+='<h3>'+element.title+'</h3>';
+            html+='<p>'+element.discription.substr(0,80)+'.....</p>';
+            html+='</li>';
+        }
+
+        $('.notification-menu').html(html);
+
+
+
+    }).catch(function(error) {
+        console.log(error);
+    })
+}
+
+
+function getnotifydesc(id) {
+    axios.post("{{route('getAllNotificationSingle')}}",{id:id})
+    .then(function(response){
+        console.log(response.data);
+        getallnotify();
+
+        var jsondata=response.data;
+        $('.modal-title').html(jsondata.title);
+        $('.modal-body').html(jsondata.discription);
+        $('.modal').modal("show");
+
+
+
+    }).catch(function(error){
+        console.log(error);
+    });
+}
+
+
+    </script>
+    <script>
+        (function (window, document) {
+            var loader = function () {
+                var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
+                script.src = "https://sandbox.sslcommerz.com/embed.min.js?" + Math.random().toString(36).substring(7);
+                tag.parentNode.insertBefore(script, tag);
+            };
+
+            window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+        })(window, document);
     </script>
 
 

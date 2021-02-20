@@ -16,110 +16,60 @@
 
 
 <div class="col-12 col-sm-12 col-md-11 col-lg-11 col-xl-11 mt-4 mx-auto allproduct">
+    <form action="{{ route('client.search2') }}" method="POST">
+        @csrf
+        <div class="row">
+
+            <div class="col-1 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+                <input type="text" name="name" id="" class="form-control" placeholder="Product Name">
+            </div>
+            <div class="col-1 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+                <select class="custom-select" name="category" id="">
+                    <option value="" selected disabled>Select Category</option>
+                    @foreach ($Categorys as $Category)
+                    <option value="{{$Category['id']}}">{{$Category['name']}}</option>
+
+                    @endforeach
+
+                </select>
+            </div>
+            <div class="col-1 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+                <select class="custom-select" name="brand" id="">
+                    <option value="" selected disabled>Select Brands</option>
+                    @foreach ($brands as $brand)
+                    <option value="{{$brand->id}}">{{$brand->name}}</option>
+
+                    @endforeach
+
+
+                </select>
+            </div>
+            <div class="col-1 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                <input type="number" name="pricerange1" class="form-control" id="" placeholder="Price Range Start">
+            </div>
+            <div class="col-1 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                <input type="number" name="pricerange2" class="form-control" id="" placeholder="Price Range End">
+
+            </div>
+            <div class="col-1 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                <input type="submit" name="" id="" class="btn btn-success btn-block" value="search">
+            </div>
+        </div>
+    </form>
 
     <div class="card border-0 mt-4">
         <div class="card-body p-0 pb-4">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-0">
-                <div class="row">
 
-                    <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 p-0">
-                        <a class="text-decoration-none text-dark" id="sidebar-toggle-button">
-                            <h5 class="px-4 pt-3"><span><i class="fas fa-bars"></i></span> All Category</h5>
-                        </a>
-                        <hr>
-                        <ul id="sidebarUnorderList">
-
-                            <li class="sidebarCatecory"><a href="#"><span></span> Watch</a></li>
-                            <li class="sidebarCatecory"><a href="#"><span></span>Man's Watch</a></li>
-                            <li class="sidebarCatecory"><a href="#"><span></span>Woman Watch</a></li>
-                            <li class="sidebarCatecory"><a href="#"><span></span>Casual Watch</a></li>
-                            <li class="sidebarCatecory"><a href="#"><span></span>Luxary Watch</a></li>
-                            <li class="sidebarCatecory"><a href="#"><span></span>Couple & set Watch</a></li>
-                            <li class="sidebarCatecory"><a href="#"><span></span>Sports Watch</a></li>
-
-                        </ul>
-                        <a class="text-decoration-none text-dark" id="sidebar-toggle-button-reating">
-                            <h5 class="pl-3 pt-3"><span>Reating</h5>
-                        </a>
-                        <hr>
-                        <ul id="sidebarUnorderListReating">
-                            <li class="sidebarCatecoryReating"><a class="text-decoration-none" href="#">
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                </a></li>
-                            <li class="sidebarCatecoryReating"><a class="text-decoration-none" class="text-decoration-none"
-                                    href="#">
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-dark"><i class="fas fa-star"></i>
-                                        <sanp class="text-decoration-none text-dark">&nbsp;& up
-                                    </span></span>
-                                </a></li>
-                            <li class="sidebarCatecoryReating"><a class="text-decoration-none" href="#">
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-dark"><i class="fas fa-star"></i></span>
-                                    <span class="text-dark"><i class="fas fa-star"></i>
-                                        <sanp class="text-decoration-none text-dark">&nbsp;& up
-                                    </span></span>
-                                </a></li>
-                            <li class="sidebarCatecoryReating"><a class="text-decoration-none" href="#">
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-warning"><i class="fas fa-star"></i></span>
-                                    <span class="text-dark"><i class="fas fa-star"></i></span>
-                                    <span class="text-dark"><i class="fas fa-star"></i></span>
-                                    <span class="text-dark"><i class="fas fa-star"></i>
-                                        <sanp class="text-decoration-none text-dark">&nbsp;& up
-                                    </span></span>
-
-
-                        </ul>
-
-                        <a class="text-decoration-none text-dark" id="sidebar-toggle-button">
-                            <h5 class="px-4 pt-3"><span>Price Range</h5>
-                        </a>
-                        <hr>
-                        <ul id="" class="p-0">
-                            <div class="form-group form-group-sm">
-                                <input type="text" name="first_range" id="first_range" class="form-control ml-2"
-                                    placeholder="Minimum Value">
-                            </div>
-                            <div class="form-group form-group-sm">
-                                <input type="text" name="second_range" id="second_range" class="form-control ml-2"
-                                    placeholder="Maximum Value">
-                            </div>
-                            <div class="form-group form-group-sm text-center">
-                                <input type="submit" name="range_submit" id="range_submit"
-                                    class="btn btn-success btn-sm btn-block ml-2" value="Apply">
-                            </div>
-                        </ul>
-
-                        <hr>
-                        <ul id="" class="p-0">
-                            <div class="form-group form-group-sm text-center">
-                                <input type="reset" name="reset" id="reset" class="btn btn-danger btn-sm btn-block ml-2"
-                                    value="Reset">
-                            </div>
-                        </ul>
-                    </div>
-
-                    <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-10 p-0">
                         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-0">
-                            @if($searchProducts->count() == 0)
+                            @if(count($searchProducts) == 0)
                             <div  style="margin:30px 0px 10px 0px; text-align:center;">
-                                <h2 style=" background-color:rgb(222, 231, 226); padding:20px; color:#000; margin:0px 50px; ">You Search for: <span style="color:#f00">{{$key}}</span></h2>
+                                <h2 style=" background-color:rgb(222, 231, 226); padding:20px; color:#000; margin:0px 20px; ">You Search for: <span style="color:#f00">{{$key}}</span></h2>
                                 <h2 style="margin-top: 20px; color:#000">No products found which match your selection</h2>
                                 <h3 style="margin-top: 20px; color:#000">Retarn  <a style="color:#f00" href="{{route('all-product')}}">Shop Page</a></h3>
                             </div>
                             @else
                             <div  style="margin:30px 0px 10px 0px; text-align:center;">
-                                <h2 style="background-color:rgb(222, 231, 226); padding:20px; color:#000; margin:0px 50px;">You Search for: <span style="color:#FF6666">{{$key}}</span></h2>
+                                <h2 style="background-color:rgb(222, 231, 226); padding:20px; color:#000; margin:0px 20px;">You Search for: <span style="color:#FF6666">{{$key}}</span></h2>
 
                             </div>
                             <div class="row">
@@ -167,7 +117,7 @@
                             @endif
 
                         </div>
-                    </div>
+
                     <div class="row">
                         <div class="custompagination"></div>
                         {{$searchProducts->links()}}
@@ -175,7 +125,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 
     <script>
         $(document).ready(function() {

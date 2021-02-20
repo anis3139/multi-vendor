@@ -19,7 +19,7 @@ class SingleProductView extends Controller
         $singleData['reatings'] = DB::select("SELECT
     *
 FROM
-    ovender.reating_reviews
+    reating_reviews
         LEFT JOIN
     users ON users.id = reating_reviews.user_id
 WHERE

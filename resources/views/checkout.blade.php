@@ -30,7 +30,8 @@
                     @auth()
 
 
-                        <form action="{{route('client.processOrder')}}" method="post">
+                        {{-- <form action="{{route('client.processOrder')}}" method="post"> --}}
+                        <form action="{{ url('/pay') }}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-md-8">

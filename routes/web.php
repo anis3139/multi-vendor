@@ -20,6 +20,20 @@ use Illuminate\Http\Request;
 
 
 Auth::routes(['verify' => true]);
+// SSLCOMMERZ Start
+Route::get('/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
+Route::get('/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);
+
+Route::post('/pay', [\App\Http\Controllers\SslCommerzPaymentController::class, 'index']);
+Route::post('/pay-via-ajax', [\App\Http\Controllers\SslCommerzPaymentController::class, 'payViaAjax']);
+
+Route::post('/success', [\App\Http\Controllers\SslCommerzPaymentController::class, 'success']);
+Route::post('/fail', [\App\Http\Controllers\SslCommerzPaymentController::class, 'fail']);
+Route::post('/cancel', [\App\Http\Controllers\SslCommerzPaymentController::class, 'cancel']);
+
+Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+//SSLCOMMERZ END
+
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
@@ -41,6 +55,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/search', [App\Http\Controllers\frontend\allProductController::class, 'search'])->name('client.search');
+Route::post('/search2', [App\Http\Controllers\frontend\allProductController::class, 'search2'])->name('client.search2');
 Route::get('/product/all', [\App\Http\Controllers\frontend\allProductController::class, 'index'])->name('all-product');
 Route::get('/flush/all', [\App\Http\Controllers\frontend\allProductController::class, 'index2'])->name('flash-product');
 
@@ -99,6 +114,11 @@ Route::group(['middleware' => 'auth'], function () {
     // Asking about Product
     Route::post('/get/all/askabout/ptoduct/messege', [\App\Http\Controllers\frontend\AskAboutProduct::class, 'getallmessege'])->name('askaboutproduct.getallmessege');
     Route::post('/askabout/ptoduct/postmessege', [\App\Http\Controllers\frontend\AskAboutProduct::class, 'store'])->name('askaboutproduct.store');
+
+
+
+    Route::get('/getNotification', [\App\Http\Controllers\frontend\NotificationController::class,'index'])->name('getAllNotification');
+    Route::post('/getNotificationsingle', [\App\Http\Controllers\frontend\NotificationController::class,'show'])->name('getAllNotificationSingle');
 });
 
 

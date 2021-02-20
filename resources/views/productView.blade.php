@@ -248,24 +248,24 @@
 <div id="productContainer">
 
     <div id="productCard">
-        <nav aria-label="breadcrumb ">
+        {{-- <nav aria-label="breadcrumb ">
           <ol class="breadcrumb bg-pure-light border-bottom">
             <li class="breadcrumb-item"><a class="text-decoration-none text-dark" href="#">All Product</a> </li>
             <li class="breadcrumb-item"><a class="text-decoration-none text-dark" href="#">Watch</a></li>
             <li class="breadcrumb-item active" aria-current="page">Fation Watch</li>
           </ol>
-        </nav>
-      <div class="container">
+        </nav> --}}
+      <div class="container mt-4">
           <div class="wrapper row">
               <div class="col-2 col-sm-2 col-md-1 col-lg-1 col-xl-1 p-0">
                   <ul class="preview-thumbnail">
 
-                    @foreach ($productDetails->img as $keyThumb=>$imageThumb)
+                    @foreach ($productDetails->img as $imageThumb)
                     <li class="
                         @if ($loop->first)
                             active
                         @endif
-                    "><a data-target="#pic-{{$keyThumb}}" data-toggle="tab"><img src="{{$imageThumb->image_path}}" /></a></li>
+                    "><a data-target="#pic-{{$loop->index}}" data-toggle="tab"><img src="{{$imageThumb->image_path}}" /></a></li>
                     @endforeach
 
 
@@ -275,11 +275,11 @@
               <div class="preview col-10 col-sm-10 col-md-6 col-lg-6 col-xl-6">
 
                   <div class="preview-pic tab-content">
-                    @foreach ($productDetails->img as $key=>$image)
+                    @foreach ($productDetails->img as $image)
                     <div class="tab-pane
                     @if ($loop->first)
                         active
-                    @endif" id="pic-{{$key}}"><img src="{{$image->image_path}}" /></div>
+                    @endif" id="pic-{{$loop->index}}"><img src="{{$image->image_path}}" /></div>
                     @endforeach
 
                   </div>
@@ -389,7 +389,7 @@
                       <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Discription</a>
                       <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Product Description</a>
                       <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Product Review</a>
-                      <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">Ask Queestion</a>
+                      {{-- <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">Ask Queestion</a> --}}
                     </div>
                   </nav>
                   <div class="tab-content py-3 px-3 px-sm-0 p-md-3 p-lg-3 pxl-3" id="nav-tabContent">
@@ -517,10 +517,10 @@
 
 
                     </div>
-                    <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                    {{-- <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                         @auth
 
-                        {{-- Cheat window --}}
+                        Cheat window
             <div class="card m-0 p-0">
                 <div class="card-body chat-care">
                     <ul class="chat">
@@ -539,7 +539,7 @@
                         <a href="{{ route('client.login') }}" class="text-center text-decoration-none">Please Login For Reating And Review</a>
                         @endguest
 
-                    </div>
+                    </div> --}}
                   </div>
 
                 </div>
